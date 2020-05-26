@@ -1,9 +1,10 @@
 # -*- coding: utf-8 -*-
-"""
-Created on Fri May 22 14:04:04 2020
 
-@author: Austin Lesh
-"""
+# TODOs:
+    
+# Fix issue writing tweet text that includes non-ASCII characters:
+# e.g. UnicodeEncodeError: 'ascii' codec can't encode character '\u2019' 
+#   in position 158: ordinal not in range(128)
 
 import GetOldTweets3 as got
 import re
@@ -12,10 +13,11 @@ import smtplib, ssl
 
 sending_email = input('Enter an email to send from: ')
 sender_password = input('Enter password for the sender\'s email: ')
-receiving_email = input('Enter an email to send to:')
+receiving_email = input('Enter an email to send to: ')
+username = input('Enter a twitter handle (without the @) to search: ')
+keywords = list(input('Enter keywords to search, separated by a comma: ').split(', '))
 
-username = 'jimmyfallon'
-count = 20
+count = 20 # This is arbitrary and depends on how often the account tweets
 
 today = str(date.today())
 yesterday = str(date.today() - timedelta(days = 1))
@@ -31,10 +33,8 @@ lst = []
     
 for i in range(len(tweets)):
     text = tweets[i].text
-    exps = ['Tonight']
-    
-    for exp in exps:
-        match = re.search(exp, text)
+    for keyword in keywords:
+        match = re.search(keyword, text)
         if match:
             lst.append(text)    
     
